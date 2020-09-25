@@ -11,10 +11,10 @@ export const SummaryCard = ({ title, subtitle, columns }) => {
         <Typography color='textSecondary' align='center' gutterBottom>
           {subtitle}
         </Typography>
-        <Typography variant='h5' component='h2' align='center' gutterBottom>
+        <Typography variant='h6' align='center' gutterBottom>
           {title}
         </Typography>
-        <Grid container spacing={8}>
+        <Grid container spacing={3}>
           {columns.map(({ heading, overline }) => (
             <Grid item align='center'>
               <Typography variant='h4' component='p'>

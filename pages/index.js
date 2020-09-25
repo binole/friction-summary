@@ -35,7 +35,7 @@ export default function Home({ cities, summary }) {
           Friction Summary
         </Typography>
         <Grid container spacing={3}>
-          <Grid item>
+          <Grid item xs={3}>
             <SummaryCard
               subtitle='The most serious series city'
               title={summary.theMostSeriousCountCity.name}
@@ -52,10 +52,10 @@ export default function Home({ cities, summary }) {
             />
           </Grid>
 
-          <Grid item>
+          <Grid item xs={3}>
             <SummaryCard
               subtitle='The most serious duration city'
-              title={summary.theMostSeriousCountCity.name}
+              title={summary.theMostSeriousDurationCity.name}
               columns={[
                 {
                   heading: summary.theMostSeriousDurationCity.seriousCount,
@@ -63,6 +63,39 @@ export default function Home({ cities, summary }) {
                 },
                 {
                   heading: summary.theMostSeriousDurationCity.totalSeriousDuration.toFixed(),
+                  overline: 'serious hours',
+                },
+              ]}
+            />
+          </Grid>
+
+          <Grid item xs={3}>
+            <SummaryCard
+              subtitle='The most serious series station'
+              title={`${summary.theMostSeriousCountStation.name} (${summary.theMostSeriousCountStation.city})`}
+              columns={[
+                {
+                  heading: summary.theMostSeriousCountStation.seriousCount,
+                  overline: 'serious series',
+                },
+                {
+                  heading: summary.theMostSeriousCountStation.totalSeriousDuration.toFixed(),
+                  overline: 'serious hours',
+                },
+              ]}
+            />
+          </Grid>
+          <Grid item xs={3}>
+            <SummaryCard
+              subtitle='The most serious duration station'
+              title={`${summary.theMostSeriousDurationStation.name} (${summary.theMostSeriousDurationStation.city})`}
+              columns={[
+                {
+                  heading: summary.theMostSeriousDurationStation.seriousCount,
+                  overline: 'serious series',
+                },
+                {
+                  heading: summary.theMostSeriousDurationStation.totalSeriousDuration.toFixed(),
                   overline: 'serious hours',
                 },
               ]}

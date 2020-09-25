@@ -37,6 +37,7 @@ const serializedData = data.reduce((o, serie, id) => {
         ...o.stations.byId,
         [station]: {
           name: station,
+          city,
           series: [
             ...new Set([...(o.stations.byId[station]?.series ?? []), id]),
           ],
@@ -64,6 +65,7 @@ export function getCities({ sort = 'totalSeriousDuration' }) {
     const stations = serializedData.cities.byId[city].stations.map(
       (stationId) => {
         const station = serializedData.stations.byId[stationId];
+
         const series = station.series.map((serieId) => {
           return serializedData.series.byId[serieId];
         });
@@ -98,14 +100,42 @@ export function getCities({ sort = 'totalSeriousDuration' }) {
   return _.sortBy(cities, sort).reverse();
 }
 
+export function getStations({ sort = 'totalSeriousDuration' } = {}) {
+  const stations = serializedData.stations.allIds.map((stationId) => {
+    const station = serializedData.stations.byId[stationId];
+    const series = station.series.map((serieId) => {
+      return serializedData.series.byId[serieId];
+    });
+
+    const seriousSeries = series.filter(({ status }) => status === 'Serious');
+
+    return {
+      id: stationId,
+      name: stationId,
+      city: station.city,
+      seriousCount: seriousSeries.length,
+      totalSeriousDuration: _.sumBy(series, 'belowStandardDuration'),
+    };
+  });
+
+  return _.sortBy(stations, sort).reverse();
+}
+
 export function getSummary() {
   const theMostSeriousCountCity = getCities({ sort: 'seriousCount' })[0];
   const theMostSeriousDurationCity = getCities({
     sort: 'totalSeriousDuration',
   })[0];
 
+  const theMostSeriousCountStation = getStations({ sort: 'seriousCount' })[0];
+  const theMostSeriousDurationStation = getStations({
+    sort: 'totalSeriousDuration',
+  })[0];
+
   return {
     theMostSeriousCountCity,
     theMostSeriousDurationCity,
+    theMostSeriousCountStation,
+    theMostSeriousDurationStation,
   };
 }
