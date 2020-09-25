@@ -2,11 +2,13 @@ import Head from 'next/head';
 import axios from 'axios';
 import React from 'react';
 import Container from '@material-ui/core/Container';
+import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import { DataGrid } from '@material-ui/data-grid';
 
 import { SummaryCard } from '../components/SummaryCard';
+import { StationsChart } from '../components/StationsChart';
 
 export default function Home({ cities, summary }) {
   const columns = [
@@ -31,77 +33,90 @@ export default function Home({ cities, summary }) {
         <title>Friction Summary</title>
       </Head>
       <div style={{ marginTop: 56 }}>
-        <Typography variant='h4' component='h1' gutterBottom>
+        <Typography variant='h2' component='h1' align='center' gutterBottom>
           Friction Summary
         </Typography>
-        <Grid container spacing={3}>
-          <Grid item xs={3}>
-            <SummaryCard
-              subtitle='The most serious series city'
-              title={summary.theMostSeriousCountCity.name}
-              columns={[
-                {
-                  heading: summary.theMostSeriousCountCity.seriousCount,
-                  overline: 'serious series',
-                },
-                {
-                  heading: summary.theMostSeriousCountCity.totalSeriousDuration.toFixed(),
-                  overline: 'serious hours',
-                },
-              ]}
-            />
-          </Grid>
+        <Box mb={10}>
+          <Typography variant='h6' align='center'>
+            Top 10 Serious Stations
+          </Typography>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <StationsChart data={summary.topSeriousStations} />
+          </div>
+        </Box>
 
-          <Grid item xs={3}>
-            <SummaryCard
-              subtitle='The most serious duration city'
-              title={summary.theMostSeriousDurationCity.name}
-              columns={[
-                {
-                  heading: summary.theMostSeriousDurationCity.seriousCount,
-                  overline: 'serious series',
-                },
-                {
-                  heading: summary.theMostSeriousDurationCity.totalSeriousDuration.toFixed(),
-                  overline: 'serious hours',
-                },
-              ]}
-            />
-          </Grid>
+        <Box mb={10}>
+          <Grid container spacing={3}>
+            <Grid item xs={3}>
+              <SummaryCard
+                subtitle='The most serious series city'
+                title={summary.theMostSeriousCountCity.name}
+                columns={[
+                  {
+                    heading: summary.theMostSeriousCountCity.seriousCount,
+                    overline: 'serious series',
+                  },
+                  {
+                    heading: summary.theMostSeriousCountCity.totalSeriousDuration.toFixed(),
+                    overline: 'serious hours',
+                  },
+                ]}
+              />
+            </Grid>
 
-          <Grid item xs={3}>
-            <SummaryCard
-              subtitle='The most serious series station'
-              title={`${summary.theMostSeriousCountStation.name} (${summary.theMostSeriousCountStation.city})`}
-              columns={[
-                {
-                  heading: summary.theMostSeriousCountStation.seriousCount,
-                  overline: 'serious series',
-                },
-                {
-                  heading: summary.theMostSeriousCountStation.totalSeriousDuration.toFixed(),
-                  overline: 'serious hours',
-                },
-              ]}
-            />
+            <Grid item xs={3}>
+              <SummaryCard
+                subtitle='The most serious duration city'
+                title={summary.theMostSeriousDurationCity.name}
+                columns={[
+                  {
+                    heading: summary.theMostSeriousDurationCity.seriousCount,
+                    overline: 'serious series',
+                  },
+                  {
+                    heading: summary.theMostSeriousDurationCity.totalSeriousDuration.toFixed(),
+                    overline: 'serious hours',
+                  },
+                ]}
+              />
+            </Grid>
+
+            <Grid item xs={3}>
+              <SummaryCard
+                subtitle='The most serious series station'
+                title={`${summary.theMostSeriousCountStation.name} (${summary.theMostSeriousCountStation.city})`}
+                columns={[
+                  {
+                    heading: summary.theMostSeriousCountStation.seriousCount,
+                    overline: 'serious series',
+                  },
+                  {
+                    heading: summary.theMostSeriousCountStation.totalSeriousDuration.toFixed(
+                      2
+                    ),
+                    overline: 'serious hours',
+                  },
+                ]}
+              />
+            </Grid>
+            <Grid item xs={3}>
+              <SummaryCard
+                subtitle='The most serious duration station'
+                title={`${summary.theMostSeriousDurationStation.name} (${summary.theMostSeriousDurationStation.city})`}
+                columns={[
+                  {
+                    heading: summary.theMostSeriousDurationStation.seriousCount,
+                    overline: 'serious series',
+                  },
+                  {
+                    heading: summary.theMostSeriousDurationStation.totalSeriousDuration.toFixed(),
+                    overline: 'serious hours',
+                  },
+                ]}
+              />
+            </Grid>
           </Grid>
-          <Grid item xs={3}>
-            <SummaryCard
-              subtitle='The most serious duration station'
-              title={`${summary.theMostSeriousDurationStation.name} (${summary.theMostSeriousDurationStation.city})`}
-              columns={[
-                {
-                  heading: summary.theMostSeriousDurationStation.seriousCount,
-                  overline: 'serious series',
-                },
-                {
-                  heading: summary.theMostSeriousDurationStation.totalSeriousDuration.toFixed(),
-                  overline: 'serious hours',
-                },
-              ]}
-            />
-          </Grid>
-        </Grid>
+        </Box>
 
         <div style={{ minHeight: 400, width: '100%', marginTop: 40 }}>
           <DataGrid columns={columns} rows={cities} />

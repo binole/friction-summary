@@ -100,7 +100,10 @@ export function getCities({ sort = 'totalSeriousDuration' }) {
   return _.sortBy(cities, sort).reverse();
 }
 
-export function getStations({ sort = 'totalSeriousDuration' } = {}) {
+export function getStations({
+  sort = 'totalSeriousDuration',
+  limit = undefined,
+} = {}) {
   const stations = serializedData.stations.allIds.map((stationId) => {
     const station = serializedData.stations.byId[stationId];
     const series = station.series.map((serieId) => {
@@ -118,7 +121,9 @@ export function getStations({ sort = 'totalSeriousDuration' } = {}) {
     };
   });
 
-  return _.sortBy(stations, sort).reverse();
+  return _.sortBy(stations, sort)
+    .reverse()
+    .slice(0, limit ?? stations.length);
 }
 
 export function getSummary() {
@@ -132,10 +137,16 @@ export function getSummary() {
     sort: 'totalSeriousDuration',
   })[0];
 
+  const topSeriousStations = getStations({
+    sort: 'seriousCount',
+    limit: 10,
+  });
+
   return {
     theMostSeriousCountCity,
     theMostSeriousDurationCity,
     theMostSeriousCountStation,
     theMostSeriousDurationStation,
+    topSeriousStations,
   };
 }
