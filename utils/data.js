@@ -97,3 +97,15 @@ export function getCities({ sort = 'totalSeriousDuration' }) {
 
   return _.sortBy(cities, sort).reverse();
 }
+
+export function getSummary() {
+  const theMostSeriousCountCity = getCities({ sort: 'seriousCount' })[0];
+  const theMostSeriousDurationCity = getCities({
+    sort: 'totalSeriousDuration',
+  })[0];
+
+  return {
+    theMostSeriousCountCity,
+    theMostSeriousDurationCity,
+  };
+}

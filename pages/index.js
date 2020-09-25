@@ -3,9 +3,12 @@ import axios from 'axios';
 import React from 'react';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
 import { DataGrid } from '@material-ui/data-grid';
 
-export default function Home({ cities }) {
+import { SummaryCard } from '../components/SummaryCard';
+
+export default function Home({ cities, summary }) {
   const columns = [
     { field: 'name', headerName: 'City', width: 120 },
     {
@@ -31,7 +34,43 @@ export default function Home({ cities }) {
         <Typography variant='h4' component='h1' gutterBottom>
           Friction Summary
         </Typography>
-        <div style={{ minHeight: 400, width: '100%' }}>
+        <Grid container spacing={3}>
+          <Grid item>
+            <SummaryCard
+              subtitle='The most serious series city'
+              title={summary.theMostSeriousCountCity.name}
+              columns={[
+                {
+                  heading: summary.theMostSeriousCountCity.seriousCount,
+                  overline: 'serious series',
+                },
+                {
+                  heading: summary.theMostSeriousCountCity.totalSeriousDuration.toFixed(),
+                  overline: 'serious hours',
+                },
+              ]}
+            />
+          </Grid>
+
+          <Grid item>
+            <SummaryCard
+              subtitle='The most serious duration city'
+              title={summary.theMostSeriousCountCity.name}
+              columns={[
+                {
+                  heading: summary.theMostSeriousDurationCity.seriousCount,
+                  overline: 'serious series',
+                },
+                {
+                  heading: summary.theMostSeriousDurationCity.totalSeriousDuration.toFixed(),
+                  overline: 'serious hours',
+                },
+              ]}
+            />
+          </Grid>
+        </Grid>
+
+        <div style={{ minHeight: 400, width: '100%', marginTop: 40 }}>
           <DataGrid columns={columns} rows={cities} />
         </div>
       </div>
@@ -40,13 +79,15 @@ export default function Home({ cities }) {
 }
 
 export async function getStaticProps() {
-  const res = await axios.get('http://localhost:3000/api/cities');
-
-  const cities = res.data;
+  const [cities, summary] = await Promise.all([
+    axios.get('http://localhost:3000/api/cities'),
+    axios.get('http://localhost:3000/api/summary'),
+  ]);
 
   return {
     props: {
-      cities,
+      cities: cities.data,
+      summary: summary.data,
     },
   };
 }
