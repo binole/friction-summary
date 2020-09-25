@@ -86,9 +86,11 @@ export function getCities({ sort = 'totalSeriousDuration' }) {
     );
 
     return {
+      id: city,
       name: city,
       seriousCount: _.sumBy(stations, 'seriousCount'),
       totalSeriousDuration: _.sumBy(stations, 'totalSeriousDuration'),
+      stationsIds: serializedData.cities.byId[city].stations,
       stations,
     };
   });
