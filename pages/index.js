@@ -47,7 +47,7 @@ export default function Home({ cities, summary }) {
 
         <Box mb={10}>
           <Grid container spacing={3}>
-            <Grid item xs={3}>
+            <Grid item xs={3} key='theMostSeriousCountCity'>
               <SummaryCard
                 subtitle='The most serious series city'
                 title={summary.theMostSeriousCountCity.name}
@@ -64,7 +64,7 @@ export default function Home({ cities, summary }) {
               />
             </Grid>
 
-            <Grid item xs={3}>
+            <Grid item xs={3} key='theMostSeriousDurationCity'>
               <SummaryCard
                 subtitle='The most serious duration city'
                 title={summary.theMostSeriousDurationCity.name}
@@ -81,7 +81,7 @@ export default function Home({ cities, summary }) {
               />
             </Grid>
 
-            <Grid item xs={3}>
+            <Grid item xs={3} key='theMostSeriousCountStation'>
               <SummaryCard
                 subtitle='The most serious series station'
                 title={`${summary.theMostSeriousCountStation.name} (${summary.theMostSeriousCountStation.city})`}
@@ -99,7 +99,7 @@ export default function Home({ cities, summary }) {
                 ]}
               />
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={3} key='theMostSeriousDurationStation'>
               <SummaryCard
                 subtitle='The most serious duration station'
                 title={`${summary.theMostSeriousDurationStation.name} (${summary.theMostSeriousDurationStation.city})`}
