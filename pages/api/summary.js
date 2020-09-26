@@ -1,7 +1,10 @@
-import { getSummary } from '../../utils/data';
+import { getSummary, getCities } from '../../utils/data';
 
 export default (req, res) => {
-  const summary = getSummary();
+  const { query } = req;
 
-  res.status(200).json(summary);
+  const summary = getSummary();
+  const cities = getCities(query);
+
+  res.status(200).json({ summary, cities });
 };

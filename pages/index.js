@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import axios from 'axios';
 import React from 'react';
+import useSWR from 'swr';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
@@ -10,22 +11,30 @@ import { DataGrid } from '@material-ui/data-grid';
 import { SummaryCard } from '../components/SummaryCard';
 import { StationsChart } from '../components/StationsChart';
 
-export default function Home({ cities, summary }) {
-  const columns = [
-    { field: 'name', headerName: 'City', width: 120 },
-    {
-      field: 'seriousCount',
-      headerName: 'Number of serious series',
-      type: 'number',
-      width: 240,
-    },
-    {
-      field: 'totalSeriousDuration',
-      headerName: 'Total serious duration (hours)',
-      type: 'number',
-      width: 240,
-    },
-  ];
+const columns = [
+  { field: 'name', headerName: 'City', width: 120 },
+  {
+    field: 'seriousCount',
+    headerName: 'Number of serious series',
+    type: 'number',
+    width: 240,
+  },
+  {
+    field: 'totalSeriousDuration',
+    headerName: 'Total serious duration (hours)',
+    type: 'number',
+    width: 240,
+  },
+];
+
+export default function Home() {
+  const { data, error } = useSWR('/api/summary', axios.get('/api/summary'));
+
+  console.log(data);
+
+  if (!data) return null;
+
+  const { summary, cities } = data;
 
   return (
     <Container>
@@ -126,16 +135,16 @@ export default function Home({ cities, summary }) {
   );
 }
 
-export async function getStaticProps() {
-  const [cities, summary] = await Promise.all([
-    axios.get('http://localhost:3000/api/cities'),
-    axios.get('http://localhost:3000/api/summary'),
-  ]);
+// export async function getStaticProps() {
+//   const [cities, summary] = await Promise.all([
+//     axios.get('http://localhost:3000/api/cities'),
+//     axios.get('http://localhost:3000/api/summary'),
+//   ]);
 
-  return {
-    props: {
-      cities: cities.data,
-      summary: summary.data,
-    },
-  };
-}
+//   return {
+//     props: {
+//       cities: cities.data,
+//       summary: summary.data,
+//     },
+//   };
+// }
